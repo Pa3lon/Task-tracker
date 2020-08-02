@@ -37,3 +37,14 @@ html {
   border: 1px solid black;
   text-align: center;
 }
+
+.modalClose {
+  position: absolute;
+  right: 0;
+  top: 0;
+  background-color: white;
+  border-radius: 30px;
+  font-size: 20px;
+  z-index: 1;
+  cursor: pointer;
+}

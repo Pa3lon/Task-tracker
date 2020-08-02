@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -8,6 +8,7 @@ import AddIcon from "@material-ui/icons/AddCircleOutlineOutlined";
 import HistoryIcon from "@material-ui/icons/FileCopySharp";
 import StatisticIcon from "@material-ui/icons/BarChart";
 import Typografy from "@material-ui/core/Typography";
+import { AddModal } from "./AddModal";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,7 +21,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const Head = (props) => {
+  const [modalOpen, setModalOpen] = useState(false);
   const classes = useStyles();
+
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -36,10 +39,15 @@ export const Head = (props) => {
           </IconButton>
           <Typografy className={classes.buttonAdd}></Typografy>
           <IconButton className={classes.root}>
-            <AddIcon />
+            <AddIcon
+              onClick={() => {
+                setModalOpen(true);
+              }}
+            />
           </IconButton>
         </Toolbar>
       </AppBar>
+      <AddModal isOpen={modalOpen} modalClose={() => setModalOpen(false)} />
     </div>
   );
 };

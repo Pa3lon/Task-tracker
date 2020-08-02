@@ -1,15 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import { Head } from "./components/Head";
-import { TaskTable } from "./components/TaskTable";
+import { Main } from "./Main";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { format } from "url";
 
 ReactDOM.render(
   <div>
-    <Head />
-    <div className="table-container">
-      <TaskTable />
-    </div>
+    <Router>
+      <Switch>
+        <Route exact path="/" component={Main} />
+      </Switch>
+    </Router>
   </div>,
   document.getElementById("root")
 );
