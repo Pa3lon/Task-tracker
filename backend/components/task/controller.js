@@ -1,16 +1,15 @@
 const Task = require("./model");
-const { connect } = require("mongoose");
+
 
 module.exports = (router) => {
   router.get("/tasks", (req, res) => {
     Task.find({}, (err, tasks) => {
       if (err) console.log(err);
       res.json(tasks);
-    });
+    }).sort({dateTime: "asc"});
   });
 
   router.post("/tasks", (req, res) => {
-    console.log(req.body);
     const task = new Task({
       title: req.body.title,
       description: req.body.description,
@@ -23,4 +22,11 @@ module.exports = (router) => {
     task.save();
     res.json(task);
   });
+
+  router.delete("/tasks", (req, res) => {
+   Task.deleteOne({_id: req.body.id}, (err, task) => {
+     if (err) res.status(500);
+     res.json(task);
+   }) 
+  })
 };

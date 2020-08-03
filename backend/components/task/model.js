@@ -6,8 +6,6 @@ const Schema = new mongoose.Schema({
   dateTime: Date,
   completed: Boolean,
   icon: String,
-  repeat: Boolean,
-  dayInterval: Number,
 });
 
 module.exports = mongoose.model("Task", Schema, "tasks");
