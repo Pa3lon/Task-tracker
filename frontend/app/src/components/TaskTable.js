@@ -1,14 +1,17 @@
-import React, { useState, useEffect } from "react";
-import { getTasks } from "../api";
+import React, { useState, useEffect, useRef } from "react";
+import { getNonCompleteTasks } from "../api";
+import { deleteTask } from "../api";
+import Button from "@material-ui/core/Button";
+import { CompleteModal } from "./CompleteModal";
 
 export const TaskTable = (props) => {
   const [tasks, setTasks] = useState([]);
   const [time, setTime] = useState([]);
-
+  const modalElement = useRef();
   useEffect(() => {
-    getTasks().then((res) => {
+    getNonCompleteTasks().then((res) => {
       setTasks(res);
-      const interval = setInterval(() => {
+      let interval = setInterval(() => {
         const newTime = [];
         res.forEach((task) => {
           let dateDif = new Date(task.dateTime) - new Date();
@@ -21,6 +24,9 @@ export const TaskTable = (props) => {
   }, []);
 
   const getTimeString = (timeDifInMillis) => {
+    if (timeDifInMillis < 0) {
+      return "0d 0h 0m 0s";
+    }
     let secs = Math.floor((timeDifInMillis / 1000) % 60);
     let mins = Math.floor((timeDifInMillis / (1000 * 60)) % 60);
     let hours = Math.floor((timeDifInMillis / (1000 * 60 * 60)) % 24);
@@ -29,22 +35,52 @@ export const TaskTable = (props) => {
     return time;
   };
 
+  const deleteAndUpdate = (taskId, i) => {
+    deleteTask(taskId).then(() => {
+      window.location = "/";
+    });
+  };
+
   return (
-    <table className="task-table">
-      <thead>
-        <tr>
-          <th>Task</th>
-          <th>Time left</th>
-        </tr>
-      </thead>
-      <tbody>
-        {tasks.map((task, i) => (
-          <tr key={task._id}>
-            <td>{task.title}</td>
-            <td>{time[i]}</td>
+    <>
+      <table className="task-table">
+        <thead>
+          <tr>
+            <th>Task</th>
+            <th>Time left</th>
+            <th></th>
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {tasks.map((task, i) => (
+            <tr key={task._id}>
+              <td>{task.title}</td>
+              <td>{time[i]}</td>
+              <td>
+                <Button
+                  style={{ margin: "10px" }}
+                  variant="contained"
+                  color="primary"
+                  onClick={() => {
+                    console.log(modalElement);
+                  }}
+                >
+                  Complete
+                </Button>
+                <Button
+                  style={{ margin: "10px" }}
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => deleteAndUpdate(task._id, i)}
+                >
+                  Delete
+                </Button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <CompleteModal ref={modalElement} />
+    </>
   );
 };

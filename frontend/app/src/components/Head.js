@@ -47,7 +47,7 @@ export const Head = (props) => {
           </IconButton>
         </Toolbar>
       </AppBar>
-      <AddModal isOpen={modalOpen} modalClose={() => setModalOpen(false)} />
+      <AddModal isOpen={modalOpen} modalClose={() => setModalOpen(false)} updateTable={() => props.updateTable}/>
     </div>
   );
 };

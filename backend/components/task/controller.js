@@ -1,12 +1,18 @@
 const Task = require("./model");
 
-
 module.exports = (router) => {
   router.get("/tasks", (req, res) => {
-    Task.find({}, (err, tasks) => {
-      if (err) console.log(err);
-      res.json(tasks);
-    }).sort({dateTime: "asc"});
+    if (req.query.completed === "false") {
+      Task.find({ completed: false }, (err, tasks) => {
+        if (err) console.log(err);
+        return res.json(tasks);
+      });
+    } else {
+      Task.find({}, (err, tasks) => {
+        if (err) console.log(err);
+        res.json(tasks);
+      }).sort({ dateTime: "asc" });
+    }
   });
 
   router.post("/tasks", (req, res) => {
@@ -24,9 +30,9 @@ module.exports = (router) => {
   });
 
   router.delete("/tasks", (req, res) => {
-   Task.deleteOne({_id: req.body.id}, (err, task) => {
-     if (err) res.status(500);
-     res.json(task);
-   }) 
-  })
+    Task.deleteOne({ _id: req.body.id }, (err, task) => {
+      if (err) res.status(500);
+      res.json(task);
+    });
+  });
 };

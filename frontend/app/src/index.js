@@ -3,7 +3,6 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import { Main } from "./Main";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { format } from "url";
 
 ReactDOM.render(
   <div>

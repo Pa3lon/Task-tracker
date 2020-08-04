@@ -21,6 +21,6 @@ db.on("open", () => {
   console.log("Connected to db");
 });
 
-app.listen(3000, (req, res) => {
+app.listen(3001, (req, res) => {
   console.log("Server starting");
 });
